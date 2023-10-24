@@ -1,0 +1,2 @@
+# python-docker-template
+Docker環境内でPythonスクリプトを実行するシンプルなテンプレート
