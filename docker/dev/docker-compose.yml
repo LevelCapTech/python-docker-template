@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: ../../
+      dockerfile: ./docker/dev/Dockerfile
+    image: <TODO:application_name>:feature
+    command: sleep infinity
+    env_file:
+      - ../../.env
+    environment:
+      - DEBUG_MODE=True
+    volumes:
+      - /<TODO:project_path>/project/<TODO:application_code>/data/log:/<TODO:application_code>/data/log

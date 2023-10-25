@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  python-app:
+    build:
+      context: ..
+      dockerfile: ./.devcontainer/Dockerfile
+    image: my-python-app:latest
+    command: sleep infinity
+    volumes:
+      - ..:/app
