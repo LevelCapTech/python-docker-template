@@ -1,5 +1,5 @@
 # 開発環境へ移動
-Set-Location -Path "<TODO:project_pass>\docker\prod"
+Set-Location -Path "<TODO:project_path>\docker\prod"
 
 # 滅びの魔法
 docker-compose down --rmi all --volumes --remove-orphans

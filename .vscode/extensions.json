@@ -6,7 +6,10 @@
 	"recommendations": [
 		// pythonのコードフォーマッタ
 		// タブサイズは4推奨なので注意してください
-		"ms-python.autopep8"
+		"ms-python.autopep8",
+		"ms-toolsai.jupyter",
+		"ms-vscode.PowerShell",
+		"ms-azuretools.vscode-docker",
 	],
 	// List of extensions recommended by VS Code that should not be recommended for users of this workspace.
 	"unwantedRecommendations": [
