@@ -10,11 +10,11 @@ current_directory=$(pwd)
 # 置換ターゲットと置換文字列を定義
 # 必要に応じて、この辞書のエントリを編集してください。
 declare -A replacement_map
-replacement_map["<TODO:application_name>"]="AAA"
-replacement_map["<TODO:project_path>"]="Bbbb"
-replacement_map["<TODO:container_pass>"]="Bbbb"
-replacement_map["<TODO:application_code>"]="Bbbb"
-replacement_map["<TODO:pass>"]="Bbbb"
+replacement_map["<TODO:application_name>"]="sample-downloader"
+replacement_map["<TODO:project_path>"]="d"
+replacement_map["<TODO:container_pass>"]="xxx"
+replacement_map["<TODO:application_code>"]="/xxx"
+replacement_map["<TODO:pass>"]="/d/Dropbox/"
 
 # カレントディレクトリ内の .ipynb および .md 以外のファイルを取得し、置換を行う
 find "$current_directory" -type f ! \( -name "*.ipynb" -o -name "*.md" \) | while read -r filepath; do
