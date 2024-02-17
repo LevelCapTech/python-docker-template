@@ -1,15 +1,13 @@
 name: Setup Repository Labels
 
 # このワークフローは、mainまたはmasterブランチへの最初のpushイベントでトリガーされます。
-on: 
-  push:
-    branches:
-      - main
-      - master
+# トリガー設定: pushイベント時にこのワークフローを実行
+on:
+  - push
 
 permissions:
+  contents: read
   issues: write
-  pull-requests: none
 
 jobs:
   setup-labels:
@@ -25,34 +23,14 @@ jobs:
       - name: Get parent hash
         run: echo "PARENT_COUNT=$(git rev-parse HEAD^@ | wc -l)" >> $GITHUB_ENV
 
-      # ステップ3: テンプレートからイシューを作成
-      # 初回コミット（親コミットがない場合）のみイシューを作成
-      - name: Create template issue
+      # ステップ3: ラベルの初期設定
+      # 初回コミット（親コミットがない場合）のみラベルの初期設定
+      - name: GitHub Labeler
         if: env.PARENT_COUNT == 0
-        uses: actions/github-script@v5
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHubトークンの使用
+        uses: crazy-max/ghaction-github-labeler@v5.0.0
         with:
-          script: |
-            // 既存のラベルを全て取得し削除します。
-            const labels = await github.rest.issues.listLabelsForRepo({
-              owner: context.repo.owner,
-              repo: context.repo.repo
-            });
-            for (const label of labels.data) {
-              await github.rest.issues.deleteLabel({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                name: label.name
-              });
-            }
-            
-            // 新しいラベルを作成します。
-            await github.rest.issues.createLabel({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              name: 'New Label',
-              color: '008672',
-              description: 'Label for new issues and PRs'
-            });
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          yaml-file: .github/labels.yml
+          skip-delete: false # trueのとき、定義ファイルに記載の無いラベルの削除を行わない
+          dry-run: false # trueの場合は、結果のみ表示で反映しない
+          

@@ -1,4 +1,4 @@
-name: create template issue
+name: Create Template Issue
 
 # トリガー設定: pushイベント時にこのワークフローを実行
 on:
