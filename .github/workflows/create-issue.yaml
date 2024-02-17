@@ -1,0 +1,40 @@
+name: create template issue
+
+# トリガー設定: pushイベント時にこのワークフローを実行
+on:
+  - push
+
+# パーミッション設定: コンテンツの読み取りとイシューへの書き込み権限を設定
+permissions:
+  contents: read
+  issues: write
+
+# ジョブ定義: テンプレートのイシューを作成
+jobs:
+  create-template-issue:
+    # ストラテジー設定: マトリックス戦略を使用して、異なるファイル名でジョブを実行
+    strategy:
+      matrix:
+        filename: ["config-replace.md"] # 使用するファイル名を指定
+    # 実行環境: ubuntu-latest
+    runs-on: ubuntu-latest
+    steps:
+      # ステップ1: リポジトリをチェックアウト
+      - name: Check out the repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # 全ての履歴をフェッチ
+
+      # ステップ2: 親コミットのハッシュを取得
+      - name: Get parent hash
+        run: echo "PARENT_COUNT=$(git rev-parse HEAD^@ | wc -l)" >> $GITHUB_ENV
+
+      # ステップ3: テンプレートからイシューを作成
+      # 初回コミット（親コミットがない場合）のみイシューを作成
+      - name: Create template issue
+        if: env.PARENT_COUNT == 0
+        uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHubトークンの使用
+        with:
+          filename: .github/issues/${{ matrix.filename }}.md # イシューテンプレートのファイルパス
