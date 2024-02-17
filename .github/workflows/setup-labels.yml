@@ -1,0 +1,51 @@
+name: Setup Repository Labels
+
+# このワークフローは、mainまたはmasterブランチへの最初のpushイベントでトリガーされます。
+on: 
+  push:
+    branches:
+      - main
+      - master
+
+permissions:
+  issues: write
+  pull-requests: none
+
+jobs:
+  setup-labels:
+    runs-on: ubuntu-latest
+    steps:
+      # リポジトリをチェックアウトします。
+      - name: Check out the repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # 初回コミット時に既存のラベルを全て削除し、新しいラベルを設定します。
+      - name: Setup initial labels
+        if: github.event.before == '0000000000000000000000000000000000000000'
+        uses: actions/github-script@v5
+        with:
+          script: |
+            // 既存のラベルを全て取得し削除します。
+            const labels = await github.rest.issues.listLabelsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+            for (const label of labels.data) {
+              await github.rest.issues.deleteLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: label.name
+              });
+            }
+            
+            // 新しいラベルを作成します。
+            await github.rest.issues.createLabel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: 'New Label',
+              color: '008672',
+              description: 'Label for new issues and PRs'
+            });
+          github-token: ${{ secrets.GITHUB_TOKEN }}
