@@ -15,16 +15,23 @@ jobs:
   setup-labels:
     runs-on: ubuntu-latest
     steps:
-      # リポジトリをチェックアウトします。
+      # ステップ1: リポジトリをチェックアウト
       - name: Check out the repo
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          fetch-depth: 0 # 全ての履歴をフェッチ
 
-      # 初回コミット時に既存のラベルを全て削除し、新しいラベルを設定します。
-      - name: Setup initial labels
-        if: github.event.before == '0000000000000000000000000000000000000000'
+      # ステップ2: 親コミットのハッシュを取得
+      - name: Get parent hash
+        run: echo "PARENT_COUNT=$(git rev-parse HEAD^@ | wc -l)" >> $GITHUB_ENV
+
+      # ステップ3: テンプレートからイシューを作成
+      # 初回コミット（親コミットがない場合）のみイシューを作成
+      - name: Create template issue
+        if: env.PARENT_COUNT == 0
         uses: actions/github-script@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHubトークンの使用
         with:
           script: |
             // 既存のラベルを全て取得し削除します。
