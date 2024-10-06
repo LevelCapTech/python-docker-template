@@ -12,19 +12,19 @@ current_directory=$(pwd)
 declare -A replacement_map
 replacement_map["<TODO:application_name>"]="sample-downloader"
 replacement_map["<TODO:project_path>"]="d"
-replacement_map["<TODO:container_pass>"]="xxx"
-replacement_map["<TODO:application_code>"]="/xxx"
-replacement_map["<TODO:pass>"]="/d/Dropbox/"
+replacement_map["<TODO:application_code>"]="xxx"
+replacement_map["<TODO:log_dir>"]="/d/Dropbox/logs"
 
 # カレントディレクトリ内の .ipynb および .md 以外のファイルを取得し、置換を行う
-find "$current_directory" -type f ! \( -name "*.ipynb" -o -name "*.md" \) | while read -r filepath; do
+find "$current_directory" -type f ! \( -name "*.ipynb" -o -name "*.md" -o -name "init_repo.sh" \) | while read -r filepath; do
 
     for target in "${!replacement_map[@]}"; do
         replacement="${replacement_map[$target]}"
         
         # grepでtargetを含むファイルだけにsed操作を適用
         if grep -q "$target" "$filepath"; then
-            sed -i "s/$target/$replacement/g" "$filepath"
+            # sed の区切り文字を | に変更
+            sed -i "s|$target|$replacement|g" "$filepath"
         fi
     done
 

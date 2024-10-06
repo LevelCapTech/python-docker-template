@@ -11,5 +11,5 @@ services:
     environment:
       - DEBUG_MODE=false
     volumes:
-      - <TODO:pass>/logs/<TODO:application_code>:/<TODO:application_code>/data/log
+      - <TODO:log_dir>/<TODO:application_code>:/<TODO:application_code>/data/log
 

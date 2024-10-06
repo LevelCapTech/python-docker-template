@@ -9,13 +9,12 @@
 - [ ] 開発環境を初期整備する
 
 1. Codespaceに接続する
-2. init_repo.shを編集する  
+2. init_repo.shを編集し、シェルスクリプトを実行する
 ```
 replacement_map["<TODO:application_name>"]="sample-downloader"
 replacement_map["<TODO:project_path>"]="d"
-replacement_map["<TODO:container_pass>"]="xxx"
-replacement_map["<TODO:application_code>"]="/xxx"
-replacement_map["<TODO:pass>"]="/d/Dropbox/"
+replacement_map["<TODO:application_code>"]="xxx"
+replacement_map["<TODO:log_dir>"]="/d/Dropbox/logs"
 ```
 3. dockerコンテナを一通り動かしてみる
 4. 動かして問題が無かったら、init_repo.shを手動削除する

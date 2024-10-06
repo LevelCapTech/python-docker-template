@@ -1,3 +1,3 @@
 #!/bin/bash
 
-python <TODO:container_pass>app/main.py
+python /<TODO:application_code>/app/main.py
